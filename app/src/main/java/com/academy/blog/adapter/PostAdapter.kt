@@ -1,4 +1,4 @@
-package com.instagram.adapter
+package com.academy.blog.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.academy.blog.R
+import com.academy.blog.data.Post
 import com.bumptech.glide.Glide
-import com.instagram.R
-import com.instagram.data.Post
 
 class PostAdapter(val activity: Context, val postList: ArrayList<Post>) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 

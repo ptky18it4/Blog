@@ -2,19 +2,18 @@ package com.instagram.fragment
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.academy.blog.R
+import com.academy.blog.adapter.PostAdapter
+import com.academy.blog.adapter.StatusAdapter
+import com.academy.blog.data.InstaStatus
+import com.academy.blog.data.Post
 import com.google.gson.Gson
-
-import com.instagram.R
-import com.instagram.adapter.PostAdapter
-import com.instagram.adapter.StatusAdapter
-import com.instagram.data.InstaStatus
-import com.instagram.data.Post
 
 class HomeFragment : Fragment() {
 
