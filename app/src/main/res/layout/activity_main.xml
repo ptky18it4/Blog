@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -14,33 +15,33 @@
             android:elevation="15dp">
 
         <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <ImageView
-                    android:id="@+id/camera_img"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_camera"/>
+                android:id="@+id/camera_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/ic_camera" />
 
             <ImageView
-                    android:id="@+id/insta_img"
-                    android:layout_width="85dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_insta"/>
+                android:id="@+id/insta_img"
+                android:layout_width="85dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_insta" />
 
             <ImageView
-                    android:id="@+id/send_img"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="15dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_send"/>
+                android:id="@+id/send_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/ic_send" />
 
         </RelativeLayout>
 
@@ -104,6 +105,7 @@
                 />
 
                 <de.hdodenhof.circleimageview.CircleImageView
+
                         android:id="@+id/profile_icon"
                         android:layout_width="@dimen/bottom_menu_size"
                         android:layout_height="@dimen/bottom_menu_size"
@@ -111,7 +113,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/menu_margin"
                         android:src="@drawable/profile"
-                />
+                    tools:ignore="MissingClass" />
 
             </RelativeLayout>
 
