@@ -9,9 +9,10 @@
     <color name="dark_black">#BCBCBC</color>
 
 <!--    My colors-->
-    <color name="purple_200">#CE93D8</color>
-    <color name="purple_500">#9C27B0</color>
-    <color name="purple_700">#7B1FA2</color>
-    <color name="teal_200">#80CBC4</color>
-    <color name="teal_700">#00796B</color>
+    <color name="purple_200">@color/light_gray</color>
+    <color name="purple_500">@color/light_gray</color>
+    <color name="purple_700">@color/light_gray</color>
+    <color name="teal_200">@color/light_gray</color>
+    <color name="teal_700">@color/light_gray</color>
+    <color name="light_gray">@color/dark_black</color>
 </resources>
