@@ -3,4 +3,5 @@
     <dimen name="bottom_menu_size">23dp</dimen>
     <dimen name="menu_margin">25dp</dimen>
     <dimen name="footer_menu_size">23dp</dimen>
+    <dimen name="padding_left">15dp</dimen>
 </resources>
