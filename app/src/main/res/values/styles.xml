@@ -23,4 +23,13 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="BottomSheet">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet</item>
+    </style>
 </resources>
