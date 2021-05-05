@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.academy.blog.R
 import com.academy.blog.databinding.FragmentGalleryBinding
 import com.bumptech.glide.Glide
 import gun0912.tedimagepicker.builder.TedImagePicker
@@ -27,7 +26,7 @@ class GalleryFragment : Fragment() {
 
         val activity = activity as Context
 
-        binding.clearImage.isVisible
+        binding.clearImage.visibility = View.GONE
 
         //xét chọn image
         binding.ChooseImg.setOnClickListener(object : View.OnClickListener{
