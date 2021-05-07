@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Blog</string>
     <string name="action_settings">Settings</string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- TODO: To get value default_web_client_id web will go to the google-services.json -> client -> oauth_client -> copy client_id -->
 </resources>

@@ -7,10 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.academy.blog.EditProfile
@@ -18,13 +16,12 @@ import com.academy.blog.R
 import com.academy.blog.adapter.PostAdapter
 import com.academy.blog.data.Post
 import com.academy.blog.fragment.BottomSheetFragment
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 
 
 class ProfileFragment : Fragment() {
-
+    private lateinit var mAuth: FirebaseAuth
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, parent, false)
 
@@ -48,6 +45,7 @@ class ProfileFragment : Fragment() {
         //xét click button chỉnh sửa trang cá nhân
         btn_EditProfile.setOnClickListener(View.OnClickListener {
             val intent = Intent(getActivity(),EditProfile::class.java)
+            intent.putExtra("Username", tv_userName.text)
             startActivity(intent)
         })
 
@@ -58,8 +56,10 @@ class ProfileFragment : Fragment() {
             }
         }
 
-
-
+        // Get info email
+        mAuth = FirebaseAuth.getInstance()
+        val currentUser = mAuth.currentUser
+        tv_userName.text = currentUser?.displayName
         return view
 
     }
