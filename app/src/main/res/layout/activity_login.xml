@@ -185,20 +185,21 @@
             android:padding="10dp"
             android:weightSum="18">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/btnGooglePlus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/white"
                 android:src="@drawable/icon_google" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/btnFacebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/white"
                 android:src="@drawable/icon_facebook" />
-
         </LinearLayout>
     </LinearLayout>
 

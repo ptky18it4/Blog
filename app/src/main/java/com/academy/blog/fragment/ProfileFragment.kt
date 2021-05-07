@@ -16,12 +16,17 @@ import com.academy.blog.R
 import com.academy.blog.adapter.PostAdapter
 import com.academy.blog.data.Post
 import com.academy.blog.fragment.BottomSheetFragment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 
 
 class ProfileFragment : Fragment() {
-
-    override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private lateinit var mAuth: FirebaseAuth
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, parent, false)
 
         val activity = activity as Context
@@ -32,29 +37,45 @@ class ProfileFragment : Fragment() {
         val tv_userName = view.findViewById<TextView>(R.id.tv_UserName)
 
         // recyclerview của id:rcv_MyPost
-        rcv_mypost.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        val postJSON: String = activity.assets.open("post.json").bufferedReader().use { it.readText() }
+        rcv_mypost.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        val postJSON: String =
+            activity.assets.open("post.json").bufferedReader().use { it.readText() }
         val mypost = Gson().fromJson(postJSON, Array<Post>::class.java)
         val mypostList = ArrayList<Post>()
         for (j in 0 until mypost.size)
-            mypostList.add(Post(mypost[j].id, mypost[j].name, mypost[j].logo, mypost[j].photo, mypost[j].likes, mypost[j].description))
+            mypostList.add(
+                Post(
+                    mypost[j].id,
+                    mypost[j].name,
+                    mypost[j].logo,
+                    mypost[j].photo,
+                    mypost[j].likes,
+                    mypost[j].description
+                )
+            )
         val postAdapter = PostAdapter(activity, mypostList)
         rcv_mypost.adapter = postAdapter
 
         //xét click button chỉnh sửa trang cá nhân
         btn_EditProfile.setOnClickListener(View.OnClickListener {
-            val intent = Intent(getActivity(),EditProfile::class.java)
+            val intent = Intent(getActivity(), EditProfile::class.java)
             startActivity(intent)
         })
+
+
+        // Firebase Auth instance
+        mAuth = FirebaseAuth.getInstance()
+        val currentUser = mAuth.currentUser
+        tv_userName.text = currentUser.displayName
 
         //xét click UserName -> đăng xuất
         tv_userName.setOnClickListener {
             val bottomSheetFragment = BottomSheetFragment()
-            fragmentManager?.let { it1 -> bottomSheetFragment.show(it1,"TAG")
+            fragmentManager?.let { it1 ->
+                bottomSheetFragment.show(it1, "TAG")
             }
         }
-
-
 
         return view
 

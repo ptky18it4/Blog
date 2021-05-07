@@ -9,12 +9,20 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.academy.blog.databinding.ActivityLoginBinding
+import com.facebook.*
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import java.util.*
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -25,7 +33,9 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
-
+    private lateinit var callbackManager: CallbackManager
+    private val loginButton: LoginButton? = null
+    private val btnFacebook: ImageButton? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -48,12 +58,16 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        // Initialise Facebook SDK
+        FacebookSdk.sdkInitialize(applicationContext);
+
         // Firebase Auth instance
         mAuth = FirebaseAuth.getInstance()
 
-
         // Call functions login
         handleLoginWithEmailPassword()
+
+
     }
 
     fun checkConnect() {
@@ -83,10 +97,10 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Switch remember me!", Toast.LENGTH_SHORT).show()
             }
             R.id.btnGooglePlus -> {
-                signIn()
+                signInGoogle()
             }
             R.id.btnFacebook -> {
-                Toast.makeText(this, "Sign in with Facebook", Toast.LENGTH_LONG).show()
+                signInFacebook()
             }
         }
     }
@@ -111,6 +125,8 @@ class LoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         checkConnect()
+        val currentUser = mAuth.currentUser
+        updateUI(currentUser)
     }
 
     private fun handleLoginWithEmailPassword() {
@@ -140,7 +156,8 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    private fun signIn() {
+    // Gooogle
+    private fun signInGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
@@ -166,7 +183,11 @@ class LoginActivity : AppCompatActivity() {
                 Log.w("SignIn", exception.toString())
             }
         }
+
+        // Pass the activity result back to the Facebook SDK
+        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
+
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         mAuth.signInWithCredential(credential)
@@ -174,12 +195,70 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("SignIn", "signInWithCredential:success")
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
+                    val user = mAuth.currentUser
+                    updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("SignIn", "signInWithCredential:failure", task.exception)
+                    updateUI(null)
                 }
             }
     }
+
+    // Facebook
+    private fun signInFacebook() {
+
+        // Initialize Facebook Login button
+        callbackManager = CallbackManager.Factory.create()
+        binding.btnFacebook.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                LoginManager.getInstance().logInWithReadPermissions(
+                    this@LoginActivity, Arrays.asList("email", "public_profile")
+                )
+                LoginManager.getInstance().registerCallback(callbackManager,
+                    object : FacebookCallback<LoginResult> {
+                        override fun onSuccess(loginResult: LoginResult) {
+                            handleFacebookAccessToken(loginResult.accessToken)
+                        }
+
+                        override fun onCancel() {
+                        }
+
+                        override fun onError(error: FacebookException) {
+                        }
+                    })
+            }
+        })
+
+    }
+
+    private fun handleFacebookAccessToken(token: AccessToken) {
+        val credential = FacebookAuthProvider.getCredential(token.token)
+        mAuth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    val user = mAuth.currentUser
+                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(
+                        baseContext, "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    updateUI(null)
+                }
+            }
+    }
+
+    private fun updateUI(user: FirebaseUser?) {
+        if (user != null) {
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            Toast.makeText(this, "Please sign in to continue!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 }
