@@ -76,32 +76,12 @@
                 />
 
                 <ImageView
-                        android:id="@+id/search_icon"
-                        android:layout_width="@dimen/bottom_menu_size"
-                        android:layout_height="@dimen/bottom_menu_size"
-                        android:layout_centerVertical="true"
-                        android:layout_toStartOf="@+id/add_icon"
-                        android:layout_toEndOf="@+id/home_icon"
-                        android:src="@drawable/ic_big_search"
-                />
-
-                <ImageView
                         android:id="@+id/add_icon"
                         android:layout_width="@dimen/bottom_menu_size"
                         android:layout_height="@dimen/bottom_menu_size"
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/ic_big_add"
-                />
-
-                <ImageView
-                        android:id="@+id/heart_icon"
-                        android:layout_width="@dimen/bottom_menu_size"
-                        android:layout_height="@dimen/bottom_menu_size"
-                        android:layout_centerVertical="true"
-                        android:layout_toStartOf="@+id/profile_icon"
-                        android:layout_toEndOf="@+id/add_icon"
-                        android:src="@drawable/ic_big_heart"
                 />
 
                 <de.hdodenhof.circleimageview.CircleImageView
