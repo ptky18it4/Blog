@@ -1,20 +1,18 @@
 package com.academy.blog
 
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager import androidx.core.content.ContextCompat
-import com.academy.blog.databinding.EditProfileBinding
-import com.bumptech.glide.Glide
-import gun0912.tedimagepicker.builder.TedImagePicker
+import android.view.WindowManager
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import com.instagram.fragment.ProfileFragment
 
 class EditProfile : AppCompatActivity() {
-    private lateinit var binding : EditProfileBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = EditProfileBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_edit_profile)
 
         val window = window
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -22,20 +20,12 @@ class EditProfile : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.grey)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
+        // ánh xạ
+        val btn_back = findViewById<ImageView>(R.id.back)
+
         //sử lí ựu kiện cho back
-        binding.back.setOnClickListener {
+        btn_back.setOnClickListener {
             finish();
         }
-        binding.btnEditAvtar.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                TedImagePicker.with(this@EditProfile)
-                    .start { uri -> Glide.with(this@EditProfile).load(uri).into(binding.imgAvt)
-                    getUri(uri)}
-            }
-        })
-    }
-
-    private fun getUri(uri: Uri) {
-        binding.tieUserName.setText(uri.toString())
     }
 }

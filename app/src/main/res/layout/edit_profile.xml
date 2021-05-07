@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".EditProfile">
-
+    <data>
+        <variable name="currentUser" type="com.academy.blog"/>
+    </data>
     <androidx.cardview.widget.CardView
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
@@ -87,7 +89,7 @@
                 android:hint="Tên người dùng">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tie_UserName"
+                    android:id="@+id/tie_Username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"/>
