@@ -136,13 +136,9 @@
                         android:id="@+id/tv_UserName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:text="Trần Phan Minh Tây"
                         android:textColor="@color/black"
                         android:textSize="20dp" />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_expand_more_24"/>
                 </LinearLayout>
 
                 <Button
@@ -151,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="15dp"
-                    android:text="Chỉnh sửa trang cá nhân"
+                    android:text="Thông tin cá nhân"
                     android:background="@drawable/rounded_button"/>
 
             </LinearLayout>

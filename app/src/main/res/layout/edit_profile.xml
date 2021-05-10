@@ -6,9 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".EditProfile">
-    <data>
-        <variable name="currentUser" type="com.academy.blog"/>
-    </data>
     <androidx.cardview.widget.CardView
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
@@ -22,7 +19,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/back"
+                android:id="@+id/btn_cancel"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_centerVertical="true"
@@ -34,12 +31,12 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="Chỉnh sửa trang cá nhân"
+                android:text="Chi tiết thông tin cá nhân"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
 
             <ImageView
-                android:id="@+id/done"
+                android:id="@+id/btn_update"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_alignParentEnd="true"
@@ -57,22 +54,37 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img_avt"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/ic_avt" />
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_gravity="center_horizontal">
+           <de.hdodenhof.circleimageview.CircleImageView
+               android:id="@+id/img_avt"
+               android:layout_width="120dp"
+               android:layout_height="120dp"
+               android:layout_marginTop="15dp"
+               android:src="@drawable/ic_avt" />
+           <ImageButton
+               android:id="@+id/btn_choose_img"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="end"
+               android:src="@drawable/ic_pick_avt"
+               android:background="@android:color/transparent"
+               android:layout_marginTop="-30dp"
+               android:visibility="gone"/>
+       </LinearLayout>
 
-        <TextView
-            android:id="@+id/btnEditAvtar"
-            android:layout_width="wrap_content"
+
+        <Button
+            android:id="@+id/btn_edit_profile"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Đổi ảnh đại diện"
-            android:textColor="#026CBD"
-            android:textSize="20dp" />
+            android:layout_marginTop="15dp"
+            android:text="Chỉnh sửa trang cá nhân"
+            android:background="@drawable/rounded_button"/>
 
 
         <LinearLayout
@@ -89,10 +101,11 @@
                 android:hint="Tên người dùng">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tie_Username"
+                    android:id="@+id/edt_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"/>
+                    android:background="@color/white"
+                    android:enabled="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,10 +116,11 @@
                 android:hint="Số điện thoại">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tie_PhoneNumber"
+                    android:id="@+id/edt_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"/>
+                    android:background="@color/white"
+                    android:enabled="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,14 +131,50 @@
                 android:hint="Email">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tie_Email"
+                    android:id="@+id/edt_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"/>
+                    android:background="@color/white"
+                    android:enabled="false"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Sinh Nhật">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_brithday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:enabled="false"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Địa chỉ">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_addrees"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:enabled="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
-
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:text="Đăng xuất"
+            android:background="@drawable/rounded_button"/>
     </LinearLayout>
 
 </LinearLayout>

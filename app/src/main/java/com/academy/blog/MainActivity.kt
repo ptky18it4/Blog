@@ -5,15 +5,19 @@ import android.view.WindowManager
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.academy.blog.databinding.ActivityMainBinding
 import com.instagram.fragment.GalleryFragment
 import com.instagram.fragment.HomeFragment
 import com.instagram.fragment.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val window = window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -21,15 +25,11 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.grey)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
-        val homeBtn = findViewById<ImageView>(R.id.home_icon)
-        val galleryBtn = findViewById<ImageView>(R.id.add_icon)
-        val profileBtn = findViewById<ImageView>(R.id.profile_icon)
-
         getSupportFragmentManager().beginTransaction().replace(R.id.frame, HomeFragment()).commit()
 
-        homeBtn.setOnClickListener(clickListener)
-        galleryBtn.setOnClickListener(clickListener)
-        profileBtn.setOnClickListener(clickListener)
+        binding.homeIcon.setOnClickListener(clickListener)
+        binding.addIcon.setOnClickListener(clickListener)
+        binding.profileIcon.setOnClickListener(clickListener)
     }
 
     private val clickListener : View.OnClickListener = View.OnClickListener { view ->

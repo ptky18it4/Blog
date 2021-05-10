@@ -1,18 +1,26 @@
 package com.academy.blog
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.WindowManager
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
-import com.instagram.fragment.ProfileFragment
+import androidx.core.view.isVisible
+import com.academy.blog.databinding.EditProfileBinding
+import com.bumptech.glide.Glide
+import gun0912.tedimagepicker.builder.TedImagePicker
+
 
 class EditProfile : AppCompatActivity() {
+    private lateinit var binding: EditProfileBinding
+    var filePath: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_profile)
+        binding = EditProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val window = window
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -20,12 +28,27 @@ class EditProfile : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.grey)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
-        // ánh xạ
-        val btn_back = findViewById<ImageView>(R.id.back)
+        binding.btnCancel.setOnClickListener { finish(); }
+        binding.btnEditProfile.setOnClickListener {
+            binding.btnChooseImg.visibility = VISIBLE
+            binding.edtUsername.isEnabled = true
+            binding.edtPhoneNumber.isEnabled = true
+            binding.edtAddrees.isEnabled = true
+            binding.edtBrithday.isEnabled = true
+            binding.edtEmail.isEnabled = true
+        }
+        binding.btnChooseImg.setOnClickListener { ImagePicker() }
 
-        //sử lí ựu kiện cho back
-        btn_back.setOnClickListener {
-            finish();
+
+    }
+
+    private fun ImagePicker() {
+        TedImagePicker.with(this).start { uri ->
+            Glide.with(this).load(uri).into(binding.imgAvt)
+            filePath = uri
+            binding.edtUsername.setText(filePath.toString())
+
         }
     }
+
 }

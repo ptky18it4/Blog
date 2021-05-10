@@ -33,7 +33,7 @@
         />
 
         <ImageView
-            android:id="@+id/menu_img"
+            android:id="@+id/btn_post"
             android:layout_width="wrap_content"
             android:layout_height="22dp"
             android:layout_centerVertical="true"

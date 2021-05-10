@@ -13,43 +13,49 @@ import com.academy.blog.adapter.PostAdapter
 import com.academy.blog.adapter.StatusAdapter
 import com.academy.blog.data.InstaStatus
 import com.academy.blog.data.Post
+import com.academy.blog.databinding.FragmentHomeBinding
 import com.google.gson.Gson
 
 class HomeFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private lateinit var binding: FragmentHomeBinding
 
-        val view = inflater.inflate(R.layout.fragment_home, parent, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        parent: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentHomeBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val activity = activity as Context
 
-        val instaStausList = view.findViewById<RecyclerView>(R.id.insta_status_list)
-        val postViewList = view.findViewById<RecyclerView>(R.id.post_list)
+        binding.instaStatusList.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding.postList.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
-        instaStausList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        postViewList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-
-        val statusJSON: String = activity.assets.open("status.json").bufferedReader().use { it.readText() }
-        val postJSON: String = activity.assets.open("post.json").bufferedReader().use { it.readText() }
+        val statusJSON: String =
+            activity.assets.open("status.json").bufferedReader().use { it.readText() }
+        val postJSON: String =
+            activity.assets.open("post.json").bufferedReader().use { it.readText() }
 
         val status = Gson().fromJson(statusJSON, Array<InstaStatus>::class.java)
         val post = Gson().fromJson(postJSON, Array<Post>::class.java)
 
-        val statusList = ArrayList<InstaStatus>()
-        val postList = ArrayList<Post>()
+        val statusList = status.toList() as ArrayList
+        val postList = post.toList() as ArrayList
 
-        for (i in 0 until status.size)
-            statusList.add(InstaStatus(status[i].id, status[i].name, status[i].picture))
 
-        for (j in 0 until post.size)
-            postList.add(Post(post[j].id, post[j].name, post[j].logo, post[j].photo, post[j].likes, post[j].description))
-
-        val statusAdapter = StatusAdapter(activity,statusList)
-        instaStausList.adapter = statusAdapter
+        val statusAdapter = StatusAdapter(activity, statusList)
+        binding.instaStatusList.adapter = statusAdapter
 
         val postAdapter = PostAdapter(activity, postList)
-        postViewList.adapter = postAdapter
+        binding.postList .adapter = postAdapter
 
-        return view
     }
+
 }
