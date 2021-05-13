@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 class EditProfile : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.edit_profile)
+        setContentView(R.layout.activity_edit_profile)
 
         val window = window
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

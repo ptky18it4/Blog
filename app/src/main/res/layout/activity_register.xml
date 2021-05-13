@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:hint="USER NAME"
+            android:hint="Username"
             android:textColorHint="@color/light_gray"
             app:boxStrokeColor="@color/light_gray">
 
@@ -93,7 +93,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"
-            android:hint="EMAIL ADDRESS"
+            android:hint="Email"
             android:textColorHint="@color/light_gray"
             app:boxStrokeColor="@color/light_gray">
 
@@ -115,7 +115,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"
-            android:hint="PASSWORD"
+            android:hint="Password"
             android:pointerIcon="copy"
             android:textColorHint="@color/light_gray"
             app:boxStrokeColor="@color/light_gray"
