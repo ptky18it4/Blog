@@ -68,4 +68,5 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'gun0912.ted:tedimagepicker:1.1.10'
+    implementation 'com.facebook.android:facebook-android-sdk:[8,9)'
 }
