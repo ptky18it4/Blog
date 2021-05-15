@@ -6,18 +6,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.academy.blog.EditProfile
 import com.academy.blog.adapter.PostAdapter
-import com.academy.blog.data.Post
+import com.academy.blog.data.ReadPost
 import com.academy.blog.databinding.FragmentProfileBinding
-import com.google.gson.Gson
+import com.google.firebase.database.*
 
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
+    private lateinit var ref: DatabaseReference
+
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentProfileBinding.inflate(layoutInflater)
@@ -29,12 +32,26 @@ class ProfileFragment : Fragment() {
         val activity = activity as Context
 
         // recyclerview của id:rcv_MyPost
-        binding.rcvMyPost.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        val postJSON: String = activity.assets.open("post.json").bufferedReader().use { it.readText() }
-        val mypost = Gson().fromJson(postJSON, Array<Post>::class.java)
-        val mypostList = mypost.toList() as ArrayList
-        val postAdapter = PostAdapter(activity, mypostList)
-        binding.rcvMyPost.adapter = postAdapter
+
+        binding.rcvMyPost.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        binding.rcvMyPost.setHasFixedSize(true)
+        val postList = arrayListOf<ReadPost>()
+        ref = FirebaseDatabase.getInstance().getReference("/post")
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (postSnapshot in snapshot.children) {
+                        val data = postSnapshot.getValue(ReadPost::class.java)
+                        postList.add(data!!)
+                    }
+                    binding.rcvMyPost.adapter = PostAdapter(activity, postList)
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(activity, error.message, Toast.LENGTH_SHORT).show()
+            }
+        })
 
         //chi tiết thông tin cá nhân
         binding.btnEditProfile.setOnClickListener( object :View.OnClickListener {
