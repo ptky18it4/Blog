@@ -12,20 +12,15 @@ import com.academy.blog.EditProfile
 import com.academy.blog.adapter.PostAdapter
 import com.academy.blog.data.Post
 import com.academy.blog.databinding.FragmentProfileBinding
-import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentProfileBinding.inflate(layoutInflater)
-
-        // get instance firebase
-        mAuth = FirebaseAuth.getInstance()
         return binding.root
     }
 
@@ -49,6 +44,6 @@ class ProfileFragment : Fragment() {
             }
 
         })
-        binding.tvUserName.text = mAuth.currentUser.displayName
+
     }
 }

@@ -1,17 +1,23 @@
 package com.academy.blog.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.academy.blog.PostDetails
 import com.academy.blog.R
-import com.academy.blog.data.Post
+import com.academy.blog.data.ReadPost
 import com.bumptech.glide.Glide
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
-class PostAdapter(val activity: Context, val postList: ArrayList<Post>) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
+class PostAdapter(val activity: Context, val postList: ArrayList<ReadPost>) :
+    RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(p0?.context).inflate(R.layout.adapter_post_layout, p0, false)
@@ -23,24 +29,54 @@ class PostAdapter(val activity: Context, val postList: ArrayList<Post>) : Recycl
     }
 
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
+        val list = postList[p1]
+        val id = postList[p1].id
+        val userName= postList[p1].name
+        val avatar = postList[p1].logo
+        val photo = postList[p1].photo
+        val likes = postList[p1].likes
+        val status = postList[p1].description
+        val time = postList[p1].dateCreate.toString()
+        val sdf = SimpleDateFormat("MM/dd/yyyy ")
+        val DateTime = Date(time.toLong())
+        val date = sdf.format(DateTime)
 
-        p0.name?.text = postList[p1].name
-        p0.likes?.text = postList[p1].likes +" "+"likes"
-        p0.description?.text = postList[p1].description
+
+        p0.likes?.text = likes + " " + "likes"
+        p0.description?.text = status
+        p0.name?.text= userName
+        p0.time.text = date
 
         Glide.with(activity)
-            .load(postList[p1].logo)
+            .load(avatar)
             .into(p0.logo)
 
         Glide.with(activity)
-            .load(postList[p1].photo)
+            .load(photo)
             .into(p0.photo)
-    }
+
+        // xử lí click photo
+        p0.photo.setOnClickListener {
+            val intent = Intent(activity, PostDetails::class.java)
+            val name = list.name
+            intent.putExtra("id", id)
+            intent.putExtra("userName", userName)
+            intent.putExtra("avatar", avatar)
+            intent.putExtra("photo", photo)
+            intent.putExtra("likes", likes)
+            intent.putExtra("status", status)
+            intent.putExtra("date", date)
+            activity.startActivities(arrayOf(intent))
+        }
+        }
+
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById<TextView>(R.id.brand_name)
         val logo = itemView.findViewById<ImageView>(R.id.logo)
         val photo = itemView.findViewById<ImageView>(R.id.post_img)
         val likes = itemView.findViewById<TextView>(R.id.likes_txt)
         val description = itemView.findViewById<TextView>(R.id.description_txt)
+        val time = itemView.findViewById<TextView>(R.id.tv_time)
     }
 }

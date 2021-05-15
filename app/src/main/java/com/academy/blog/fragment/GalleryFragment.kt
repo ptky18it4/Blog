@@ -1,12 +1,12 @@
 package com.instagram.fragment
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.academy.blog.data.NewPost
 import com.academy.blog.databinding.FragmentGalleryBinding
 import com.bumptech.glide.Glide
 import com.google.firebase.database.FirebaseDatabase
@@ -31,25 +31,19 @@ class GalleryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val activity = activity as Context
-
         binding.clearImage.visibility = View.GONE
 
         //xét chọn image
-        binding.ChooseImg.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                TedImagePicker.with(activity)
-                    .start { uri ->
-                        Glide.with(activity).load(uri).into(binding.image)
-                        if (uri != null) {
-                            binding.clearImage.setVisibility(View.VISIBLE)
-                            binding.ChooseImg.setVisibility(View.GONE)
-                            filePath = uri
-                        } }
-            }
-        })
+        binding.ChooseImg.setOnClickListener{ PickImage()}
         binding.clearImage.setOnClickListener { ClearImage() }
         binding.btnPost.setOnClickListener { UpLoadData() }
+
+
+
+    }
+
+    private fun getData() {
+
     }
 
     // upload dữ liệu lên firebase
@@ -60,10 +54,14 @@ class GalleryFragment : Fragment() {
         storage.putFile(filePath!!)
             .addOnSuccessListener {
                 storage.downloadUrl.addOnSuccessListener {
-                    val urlImage = it.toString()
+                    val name = "minh tay"
+                    val photo = it.toString()
+                    val logo = it.toString()
+                    val like = "150"
                     val id = uid
-                    val status = binding.status.text.toString()
-                    val dataPost = dataPost(id, status, urlImage)
+                    val description = binding.status.text.toString()
+//                    val dataPost = dataPost(id, name, logo, photo, like, description )
+                    val dataPost = NewPost(id, name, logo, photo, like, description)
                     val database = FirebaseDatabase.getInstance().getReference("/post/$id")
                     database.setValue(dataPost)
                     database.child("dateCreate").setValue(ServerValue.TIMESTAMP)
@@ -77,6 +75,18 @@ class GalleryFragment : Fragment() {
         binding.ChooseImg.setVisibility(View.VISIBLE)
         binding.clearImage.setVisibility(View.GONE)
     }
+    private fun  PickImage(){
+        activity?.let {
+            TedImagePicker.with(it)
+                .start { uri ->
+                    Glide.with(activity!!).load(uri).into(binding.image)
+                    if (uri != null) {
+                        binding.clearImage.setVisibility(View.VISIBLE)
+                        binding.ChooseImg.setVisibility(View.GONE)
+                        filePath = uri
+                    }
+                }
+        }
+    }
 }
 
-class dataPost(val id: String, val status: String, val urlImage: String)
