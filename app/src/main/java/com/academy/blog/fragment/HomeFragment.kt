@@ -8,15 +8,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.academy.blog.R
 import com.academy.blog.adapter.PostAdapter
-import com.academy.blog.adapter.StatusAdapter
-import com.academy.blog.data.InstaStatus
-import com.academy.blog.data.NewPost
 import com.academy.blog.data.ReadPost
 import com.academy.blog.databinding.FragmentHomeBinding
 import com.google.firebase.database.*
-import com.google.gson.Gson
 
 class HomeFragment : Fragment() {
 
@@ -36,15 +31,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val activity = activity as Context
 
-       /* binding.instaStatusList.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        val statusJSON: String =
-            activity.assets.open("status.json").bufferedReader().use { it.readText() }
-        val status = Gson().fromJson(statusJSON, Array<InstaStatus>::class.java)
-        val statusList =
-        val statusAdapter = StatusAdapter(activity, statusList)
-        binding.instaStatusList.adapter = statusAdapter*/
-
         binding.postList.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         binding.postList.setHasFixedSize(true)
@@ -57,7 +43,8 @@ class HomeFragment : Fragment() {
                         val data = postSnapshot.getValue(ReadPost::class.java)
                         postList.add(data!!)
                     }
-                    binding.postList.adapter = PostAdapter(activity, postList)
+                    val adapter = PostAdapter(activity,postList)
+                    binding.postList.adapter = adapter
                 }
             }
             override fun onCancelled(error: DatabaseError) {

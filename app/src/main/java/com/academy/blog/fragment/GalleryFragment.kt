@@ -1,10 +1,16 @@
 package com.instagram.fragment
 
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.academy.blog.data.NewPost
 import com.academy.blog.databinding.FragmentGalleryBinding
@@ -33,17 +39,22 @@ class GalleryFragment : Fragment() {
 
         binding.clearImage.visibility = View.GONE
 
-        //xét chọn image
         binding.ChooseImg.setOnClickListener{ PickImage()}
         binding.clearImage.setOnClickListener { ClearImage() }
         binding.btnPost.setOnClickListener { UpLoadData() }
-
-
+        binding.status.doOnTextChanged { text, start, before, count -> TextWatcherBTN() }
 
     }
-
-    private fun getData() {
-
+    // textWatcher cho btn Post
+    private fun TextWatcherBTN() {
+        val string = binding.status.text.toString().trim()
+        if (!string.isEmpty()==true){
+            binding.btnPost.isEnabled = true
+            binding.btnPost.setTextColor(Color.parseColor("#05AFFB"))
+        }else{
+            binding.btnPost.isEnabled = false
+            binding.btnPost.setTextColor(Color.parseColor("#BCBCBC"))
+        }
     }
 
     // upload dữ liệu lên firebase
@@ -74,6 +85,8 @@ class GalleryFragment : Fragment() {
         binding.image.setImageResource(0)
         binding.ChooseImg.setVisibility(View.VISIBLE)
         binding.clearImage.setVisibility(View.GONE)
+        binding.btnPost.isEnabled = false
+        binding.btnPost.setTextColor(Color.parseColor("#BCBCBC"))
     }
     private fun  PickImage(){
         activity?.let {
@@ -84,6 +97,8 @@ class GalleryFragment : Fragment() {
                         binding.clearImage.setVisibility(View.VISIBLE)
                         binding.ChooseImg.setVisibility(View.GONE)
                         filePath = uri
+                        binding.btnPost.isEnabled = true
+                        binding.btnPost.setTextColor(Color.parseColor("#05AFFB"))
                     }
                 }
         }

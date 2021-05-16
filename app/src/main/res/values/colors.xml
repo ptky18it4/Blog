@@ -15,4 +15,6 @@
     <color name="teal_200">@color/light_gray</color>
     <color name="teal_700">@color/light_gray</color>
     <color name="light_gray">@color/dark_black</color>
+    <color name="buttonPost">#05AFFB</color>
+
 </resources>

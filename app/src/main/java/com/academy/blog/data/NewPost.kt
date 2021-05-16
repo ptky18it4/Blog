@@ -18,3 +18,15 @@ data class ReadPost(
     var description: String? = null,
     var dateCreate: Long? = null
 )
+
+data class NewComment(
+    var comment: String? = null,
+    var uid: String? = null,
+    var uname: String? = null,
+    var uavatar: String? = null)
+data class ReadComment(
+    var comment: String? = null,
+    var uid: String? = null,
+    var uname: String? = null,
+    var uavatar: String? = null,
+    var dateCreate : Long? = null)
