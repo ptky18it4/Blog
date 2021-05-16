@@ -35,7 +35,7 @@
                             android:id="@+id/img_avt"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
-                            android:src="@drawable/ic_avt" />
+                            android:src="@drawable/default_avatar" />
 
                     </LinearLayout>
 

@@ -14,18 +14,21 @@ import com.academy.blog.adapter.StatusAdapter
 import com.academy.blog.data.InstaStatus
 import com.academy.blog.data.Post
 import com.academy.blog.databinding.FragmentHomeBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-
+    private lateinit var mAuth: FirebaseAuth
     override fun onCreateView(
         inflater: LayoutInflater,
         parent: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater)
+        // get instance firebase
+        mAuth = FirebaseAuth.getInstance()
         return binding.root
     }
 
@@ -55,6 +58,7 @@ class HomeFragment : Fragment() {
 
         val postAdapter = PostAdapter(activity, postList)
         binding.postList .adapter = postAdapter
+
 
     }
 

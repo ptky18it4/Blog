@@ -64,7 +64,7 @@
                android:layout_width="120dp"
                android:layout_height="120dp"
                android:layout_marginTop="15dp"
-               android:src="@drawable/ic_avt" />
+               android:src="@drawable/default_avatar" />
            <ImageButton
                android:id="@+id/btn_choose_img"
                android:layout_width="wrap_content"
