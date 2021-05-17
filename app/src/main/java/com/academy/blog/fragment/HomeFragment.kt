@@ -11,22 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.academy.blog.adapter.PostAdapter
 import com.academy.blog.data.ReadPost
 import com.academy.blog.databinding.FragmentHomeBinding
-<<<<<<< HEAD
 import com.google.firebase.auth.FirebaseAuth
 
-=======
 import com.google.firebase.database.*
->>>>>>> master
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-<<<<<<< HEAD
     private lateinit var mAuth: FirebaseAuth
-=======
     private lateinit var ref: DatabaseReference
 
->>>>>>> master
     override fun onCreateView(
         inflater: LayoutInflater,
         parent: ViewGroup?,
