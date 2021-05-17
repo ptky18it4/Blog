@@ -108,9 +108,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        android:textColor="@color/black"
         android:textSize="13sp"
-<<<<<<< HEAD
         android:textColor="@color/black"/>
 
     <RelativeLayout
@@ -144,8 +142,5 @@
         />
 
     </RelativeLayout>
-=======
-        android:layout_marginBottom="5dp"/>
->>>>>>> master
 
 </RelativeLayout>
