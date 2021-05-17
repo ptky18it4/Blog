@@ -48,7 +48,7 @@ class RegisterActivity : AppCompatActivity() {
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
                             // add information account to firebase fire store
-                            saveToFireStore(mAuth.currentUser.uid, email)
+                            saveToFireStore(mAuth.currentUser!!.uid, email)
 
                             val user = mAuth.currentUser
                             updateUI(user)

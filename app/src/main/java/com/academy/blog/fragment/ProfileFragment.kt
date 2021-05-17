@@ -24,6 +24,7 @@ import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 
 
+@Suppress("UNREACHABLE_CODE")
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
@@ -36,17 +37,18 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentProfileBinding.inflate(layoutInflater)
+        return binding.root
 
-        // get instance firebase
-        mAuth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
-        storage = FirebaseStorage.getInstance()
-        lateinit var ref: DatabaseReference
+    }
 
-        fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
             val activity = activity as Context
-
+            // get instance firebase
+            mAuth = FirebaseAuth.getInstance()
+            db = FirebaseFirestore.getInstance()
+            storage = FirebaseStorage.getInstance()
+            lateinit var ref: DatabaseReference
             // recyclerview của id:rcv_MyPost
             binding.rcvMyPost.layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
@@ -87,7 +89,7 @@ class ProfileFragment : Fragment() {
 
         fun getInfo() {
             val user = mAuth.currentUser
-            var name = user.displayName
+            var name = user!!.displayName
             var photoUrl = user.photoUrl
             user?.let {
                 // Name, email address, and profile photo Url
@@ -96,7 +98,7 @@ class ProfileFragment : Fragment() {
                     Picasso.get().load(photoUrl.toString()).into(binding.imgAvt)
                 }
             }
-            db.collection("Users").document(mAuth.currentUser.uid)
+            db.collection("Users").document(mAuth.currentUser!!.uid)
                 .get().addOnSuccessListener { documentSnapshot ->
                     val account = documentSnapshot.toObject<AccountModel>()
                     if (name == null || photoUrl == null) {
@@ -107,4 +109,3 @@ class ProfileFragment : Fragment() {
 
         }
     }
-}

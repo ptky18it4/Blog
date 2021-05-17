@@ -190,6 +190,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             } else {
                 Log.w("SignIn", exception.toString())
+
             }
         }
 

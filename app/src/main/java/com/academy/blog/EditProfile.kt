@@ -73,7 +73,7 @@ class EditProfile : AppCompatActivity() {
         // Create an initial document to update.
         var url: String?= null
         if (filePath == null) return
-        val storage = storage.getReference("/Avatar/${mAuth.currentUser.uid}")
+        val storage = storage.getReference("/Avatar/${mAuth.currentUser!!.uid}")
         storage.putFile(filePath!!)
             .addOnSuccessListener {
                 storage.downloadUrl.addOnSuccessListener {
@@ -82,7 +82,7 @@ class EditProfile : AppCompatActivity() {
                     val phone: String? = binding.edtPhoneNumber.text.toString()
                     val address: String? = binding.edtAddrees.text.toString()
                     val email: String? = binding.edtEmail.text.toString()
-                    val df = db.collection("Users").document(mAuth.currentUser.uid)
+                    val df = db.collection("Users").document(mAuth.currentUser!!.uid)
                     df.update("avatar", url)
                     df.update("name", name)
                     df.update("phone", phone)
@@ -102,10 +102,10 @@ class EditProfile : AppCompatActivity() {
 
     private fun getInfo() {
         val user = mAuth.currentUser
-        val name = user.displayName
-        val email = user.email
-        val photo = user.photoUrl
-        val phoneNumber = user.phoneNumber
+        val name = user?.displayName
+        val email = user?.email
+        val photo = user?.photoUrl
+        val phoneNumber = user?.phoneNumber
 
         binding.edtUsername.setText(name)
         binding.edtEmail.setText(email)
@@ -114,7 +114,7 @@ class EditProfile : AppCompatActivity() {
             Picasso.get().load(photo).into(binding.imgAvt)
         }
 
-        db.collection("Users").document(mAuth.currentUser.uid)
+        db.collection("Users").document(mAuth.currentUser!!.uid)
             .get().addOnSuccessListener { documentSnapshot ->
                if(name== null || photo == null) {
                    val account = documentSnapshot.toObject<AccountModel>()

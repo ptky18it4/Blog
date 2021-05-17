@@ -2,6 +2,7 @@ package com.academy.blog.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.academy.blog.PostDetails
 import com.academy.blog.R
 import com.academy.blog.data.ReadPost
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -22,6 +24,8 @@ import kotlin.collections.ArrayList
 
 class PostAdapter(val activity: Context, val postList: ArrayList<ReadPost>) :
     RecyclerView.Adapter<PostAdapter.ViewHolder>() {
+
+    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(p0?.context).inflate(R.layout.adapter_post_layout, p0, false)
@@ -36,9 +40,8 @@ class PostAdapter(val activity: Context, val postList: ArrayList<ReadPost>) :
         val list = postList[p1]
         val id = postList[p1].id
         val userName= postList[p1].name
-        val avatar = postList[p1].logo
+        val avatar = postList[p1].uavatar
         val photo = postList[p1].photo
-        val likes = postList[p1].likes
         val status = postList[p1].description
         val time = postList[p1].dateCreate.toString()
         val sdf = SimpleDateFormat("MM/dd/yyyy ")
@@ -48,6 +51,7 @@ class PostAdapter(val activity: Context, val postList: ArrayList<ReadPost>) :
 
 
         p0.description?.text = status
+        p0.description.setTypeface(null,Typeface.BOLD_ITALIC)
         p0.name?.text= userName
         p0.time.text = date
 
@@ -67,14 +71,14 @@ class PostAdapter(val activity: Context, val postList: ArrayList<ReadPost>) :
             intent.putExtra("userName", userName)
             intent.putExtra("avatar", avatar)
             intent.putExtra("photo", photo)
-            intent.putExtra("likes", likes)
             intent.putExtra("status", status)
             intent.putExtra("date", date)
             activity.startActivities(arrayOf(intent))
         }
         var getlike = false
         val setLike = FirebaseDatabase.getInstance().getReference("/like")
-        val uid = "1234"
+        mAuth = FirebaseAuth.getInstance()
+        val uid = mAuth.currentUser!!.getUid()
         setLike.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.child(id!!).hasChild(uid)) {

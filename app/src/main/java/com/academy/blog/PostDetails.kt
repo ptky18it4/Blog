@@ -1,7 +1,10 @@
 package com.academy.blog
 
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.academy.blog.adapter.CommentAdapter
@@ -9,6 +12,7 @@ import com.academy.blog.data.NewComment
 import com.academy.blog.data.ReadComment
 import com.academy.blog.databinding.ActivityPostDetailsBinding
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import java.util.*
 
@@ -17,8 +21,9 @@ class PostDetails : AppCompatActivity() {
     private lateinit var binding: ActivityPostDetailsBinding
     private lateinit var idPost: String
     private lateinit var ref: DatabaseReference
+    private lateinit var mAuth: FirebaseAuth
     private var like = false
-    private var uid = "1234"
+    private var uid : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +53,10 @@ class PostDetails : AppCompatActivity() {
         binding.likes.setOnClickListener { eventLikes()  }
         binding.addComment.setOnClickListener { addComment() }
 
+        mAuth = FirebaseAuth.getInstance()
+        uid = mAuth.currentUser!!.getUid()
+        val uphotoUrl = mAuth.currentUser!!.photoUrl
+        Glide.with(this).load(uphotoUrl).into(binding.avtUserAcc)
         reloadComment()
         reloadLikes()
     }
@@ -56,10 +65,10 @@ class PostDetails : AppCompatActivity() {
         val setLike = FirebaseDatabase.getInstance().getReference("/like/$idPost")
         if (like==false){
             like = true
-            setLike.child(uid).setValue(true)
+            setLike.child(uid.toString()).setValue(true)
         }else{
             like = false
-            setLike.child(uid).removeValue()
+            setLike.child(uid.toString()).removeValue()
         }
     }
 
@@ -67,7 +76,7 @@ class PostDetails : AppCompatActivity() {
         val setLike = FirebaseDatabase.getInstance().getReference("/like")
         setLike.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.child(idPost).hasChild(uid)) {
+                if (snapshot.child(idPost).hasChild(uid.toString())) {
                     like = true
                     val likeNumber = snapshot.child(idPost).childrenCount
                     binding.likeNumber.text = likeNumber.toString() + " like"
@@ -84,18 +93,24 @@ class PostDetails : AppCompatActivity() {
     }
 
 
+    @SuppressLint("ServiceCast")
     private fun addComment() {
         if (binding.comment.text.length > 0) {
-            val uid = UUID.randomUUID().toString()
             val database = FirebaseDatabase.getInstance().getReference("/comment/$idPost").push()
             val comment = binding.comment.text.toString()
-            var uname = "tay"
-            var uavatar =
-                "https://firebasestorage.googleapis.com/v0/b/blog-dc4b9.appspot.com/o/postImage%2F0296d86f-989c-4e76-81c6-45b7758e962b?alt=media&token=ee56b701-1f24-4e8b-a5c4-92f16ec0ebbf"
+            var user = mAuth.currentUser
+            val uname = user!!.displayName
+            val uavatar = user.photoUrl.toString()
             val dataComment = NewComment(comment, uid, uname, uavatar)
             database.setValue(dataComment)
             database.child("dateCreate").setValue(ServerValue.TIMESTAMP)
             Toast.makeText(this@PostDetails, uname + " " + comment, Toast.LENGTH_SHORT).show()
+            val view = this.currentFocus
+            view?.let { v ->
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.let { it.hideSoftInputFromWindow(v.windowToken, 0) }
+            }
+            binding.comment.text.clear()
         } else {
             binding.addComment.isEnabled = false
             Toast.makeText(this@PostDetails, "Hãy nhập bình luận của bạn", Toast.LENGTH_SHORT)

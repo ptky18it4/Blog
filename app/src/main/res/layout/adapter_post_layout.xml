@@ -6,146 +6,111 @@
     android:background="@drawable/shadow"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/post_header_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="7dp"
-        android:layout_marginLeft="7dp">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+      <LinearLayout
+          android:id="@+id/post_header_layout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="7dp"
+          android:layout_marginLeft="7dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/logo"
-            android:layout_width="30dp"
-            android:layout_height="26dp"
-            android:layout_gravity="center"
-            tools:ignore="MissingClass" />
+          <de.hdodenhof.circleimageview.CircleImageView
+              android:id="@+id/logo"
+              android:layout_width="30dp"
+              android:layout_height="30dp"
+              android:layout_gravity="center"
+              tools:ignore="MissingClass"
+              android:src="@drawable/ic_avt"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp">
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:layout_marginLeft="10dp">
 
-            <TextView
-                android:id="@+id/brand_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_toEndOf="@+id/logo"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+              <TextView
+                  android:id="@+id/brand_name"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center_vertical"
+                  android:layout_toEndOf="@+id/logo"
+                  android:textColor="@color/black"
+                  android:textSize="12sp"
+                  android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/likes_txt"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                android:layout_gravity="center_vertical"/>
-        </LinearLayout>
+              <TextView
+                  android:id="@+id/tv_time"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/likes_txt"
+                  android:textColor="@color/black"
+                  android:textSize="13sp"
+                  android:layout_gravity="center_vertical"/>
+          </LinearLayout>
 
-    </LinearLayout>
+      </LinearLayout>
 
-    <ImageView
-        android:id="@+id/post_img"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/post_header_layout"
-         android:layout_marginTop="7dp"/>
+      <ImageView
+          android:id="@+id/post_img"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/post_header_layout"
+          android:layout_marginTop="7dp"/>
 
-    <RelativeLayout
-        android:id="@+id/post_footer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/post_img">
+      <LinearLayout
+          android:id="@+id/post_footer_layout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/post_img"
+          android:orientation="horizontal"
+          android:layout_marginTop="5dp">
 
-        <ImageView
-            android:id="@+id/heart"
-            android:layout_width="@dimen/footer_menu_size"
-            android:layout_height="@dimen/footer_menu_size"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/ic_heart" />
+          <ImageView
+              android:id="@+id/heart"
+              android:layout_width="@dimen/footer_menu_size"
+              android:layout_height="@dimen/footer_menu_size"
+              android:layout_centerVertical="true"
+              android:layout_marginStart="15dp"
+              android:src="@drawable/ic_heart" />
 
-        <ImageView
-            android:id="@+id/reply"
-            android:layout_width="@dimen/footer_menu_size"
-            android:layout_height="@dimen/footer_menu_size"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
-            android:layout_toEndOf="@+id/heart"
-            android:src="@drawable/ic_reply" />
+          <ImageView
+              android:id="@+id/reply"
+              android:layout_width="@dimen/footer_menu_size"
+              android:layout_height="@dimen/footer_menu_size"
+              android:layout_centerVertical="true"
+              android:layout_marginStart="15dp"
+              android:layout_toEndOf="@+id/heart"
+              android:src="@drawable/ic_reply" />
 
-        <ImageView
-            android:id="@+id/send"
-            android:layout_width="@dimen/footer_menu_size"
-            android:layout_height="@dimen/footer_menu_size"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
-            android:layout_toEndOf="@+id/reply"
-            android:src="@drawable/ic_send" />
+          <ImageView
+              android:id="@+id/send"
+              android:layout_width="@dimen/footer_menu_size"
+              android:layout_height="@dimen/footer_menu_size"
+              android:layout_centerVertical="true"
+              android:layout_marginStart="15dp"
+              android:layout_toEndOf="@+id/reply"
+              android:src="@drawable/ic_send" />
 
-    </RelativeLayout>
+      </LinearLayout>
 
-    <TextView
-        android:id="@+id/likes_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/post_footer_layout"
-        android:layout_marginStart="15dp"
-        android:textColor="@color/black"
-        android:textSize="13sp"
-        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/description_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/likes_txt"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:textColor="@color/black"
-        android:textSize="13sp"
-<<<<<<< HEAD
-        android:textColor="@color/black"/>
 
-    <RelativeLayout
-        android:id="@+id/comments_latout"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/description_txt"
-        android:layout_marginTop="10dp">
+      <TextView
+          android:id="@+id/description_txt"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/likes_txt"
+          android:layout_marginStart="15dp"
+          android:layout_marginTop="5dp"
+          android:layout_marginEnd="10dp"
+          android:textSize="15sp"
+          android:textColor="@color/black" />
+  </LinearLayout>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_pic"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/default_avatar"
-        />
 
-        <EditText
-            android:id="@+id/comment_edt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/profile_pic"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:hint="Add a comment..."
-            android:textSize="13sp"
-            android:textColor="@color/black"
-            android:background="@null"
-        />
-
-    </RelativeLayout>
-=======
-        android:layout_marginBottom="5dp"/>
->>>>>>> master
 
 </RelativeLayout>

@@ -1,20 +1,26 @@
 package com.academy.blog.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import com.academy.blog.EditProfile
+import com.academy.blog.MainActivity
 import com.academy.blog.data.NewPost
 import com.academy.blog.databinding.FragmentGalleryBinding
+import com.academy.blog.databinding.FragmentHomeBinding
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
 import com.google.firebase.storage.FirebaseStorage
+import com.instagram.fragment.HomeFragment
 import com.squareup.picasso.Picasso
 import gun0912.tedimagepicker.builder.TedImagePicker
 import java.util.*
@@ -25,6 +31,9 @@ class GalleryFragment : Fragment() {
     private lateinit var binding: FragmentGalleryBinding
     private lateinit var mAuth: FirebaseAuth
     var filePath: Uri? = null
+    var uname : String? = null
+    var uid :String? = null
+    var uavatar : String? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         parent: ViewGroup?,
@@ -54,10 +63,11 @@ class GalleryFragment : Fragment() {
         }
         binding.clearImage.setOnClickListener { ClearImage() }
         binding.btnPost.setOnClickListener { UpLoadData() }
-        val name = mAuth.currentUser.displayName
-        binding.brandName.text = name
-        if (mAuth.currentUser.photoUrl != null) {
-            Picasso.get().load(mAuth.currentUser.photoUrl).into(binding.logo)
+        uname = mAuth.currentUser!!.displayName
+        uavatar = mAuth.currentUser!!.photoUrl.toString()
+        binding.brandName.text = uname
+        if (mAuth.currentUser!!.photoUrl != null) {
+            Picasso.get().load(uavatar).into(binding.logo)
             binding.ChooseImg.setOnClickListener { PickImage() }
             binding.clearImage.setOnClickListener { ClearImage() }
             binding.btnPost.setOnClickListener { UpLoadData() }
@@ -81,22 +91,25 @@ class GalleryFragment : Fragment() {
     // upload dữ liệu lên firebase
     private fun UpLoadData() {
         if (filePath == null) return
-        val uid = UUID.randomUUID().toString()
-        val storage = FirebaseStorage.getInstance().getReference("/postImage/$uid")
+        val p_id = UUID.randomUUID().toString()
+        val storage = FirebaseStorage.getInstance().getReference("/postImage/$p_id")
         storage.putFile(filePath!!)
             .addOnSuccessListener {
                 storage.downloadUrl.addOnSuccessListener {
-                    val name = "minh tay"
-                    val photo = it.toString()
-                    val logo = it.toString()
-                    val like = "150"
-                    val id = uid
+
+
+                    val p_photo = it.toString()
+                    val id = p_id
                     val description = binding.status.text.toString()
-//                    val dataPost = dataPost(id, name, logo, photo, like, description )
-                    val dataPost = NewPost(id, name, logo, photo, like, description)
+                    val dataPost = NewPost(id, uname, uavatar, p_photo, description,uid)
                     val database = FirebaseDatabase.getInstance().getReference("/post/$id")
-                    database.setValue(dataPost)
-                    database.child("dateCreate").setValue(ServerValue.TIMESTAMP)
+                    database.setValue(dataPost).addOnSuccessListener {
+                        Toast.makeText(activity,"Finished creating new posts",Toast.LENGTH_SHORT)
+                        database.child("dateCreate").setValue(ServerValue.TIMESTAMP)
+                        val intent = Intent(getActivity(), MainActivity::class.java)
+                        startActivity(intent)
+                    }
+
                 }
             }
     }
