@@ -1,36 +1,37 @@
-package com.instagram.fragment
+package com.academy.blog.fragment
 
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.academy.blog.data.NewPost
 import com.academy.blog.databinding.FragmentGalleryBinding
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
 import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import gun0912.tedimagepicker.builder.TedImagePicker
 import java.util.*
 
+@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class GalleryFragment : Fragment() {
 
     private lateinit var binding: FragmentGalleryBinding
+    private lateinit var mAuth: FirebaseAuth
     var filePath: Uri? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         parent: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentGalleryBinding.inflate(layoutInflater)
+        mAuth = FirebaseAuth.getInstance()
         return binding.root
     }
 
@@ -39,19 +40,39 @@ class GalleryFragment : Fragment() {
 
         binding.clearImage.visibility = View.GONE
 
-        binding.ChooseImg.setOnClickListener{ PickImage()}
+        //xét chọn image
+        binding.ChooseImg.setOnClickListener {
+            activity?.let { it1 ->
+                TedImagePicker.with(it1)
+                    .start { uri ->
+                        Glide.with(activity!!).load(uri).into(binding.image)
+                        binding.clearImage.setVisibility(View.VISIBLE)
+                        binding.ChooseImg.setVisibility(View.GONE)
+                        filePath = uri
+                    }
+            }
+        }
         binding.clearImage.setOnClickListener { ClearImage() }
         binding.btnPost.setOnClickListener { UpLoadData() }
-        binding.status.doOnTextChanged { text, start, before, count -> TextWatcherBTN() }
+        val name = mAuth.currentUser.displayName
+        binding.brandName.text = name
+        if (mAuth.currentUser.photoUrl != null) {
+            Picasso.get().load(mAuth.currentUser.photoUrl).into(binding.logo)
+            binding.ChooseImg.setOnClickListener { PickImage() }
+            binding.clearImage.setOnClickListener { ClearImage() }
+            binding.btnPost.setOnClickListener { UpLoadData() }
+            binding.status.doOnTextChanged { text, start, before, count -> TextWatcherBTN() }
+
+        }
 
     }
     // textWatcher cho btn Post
     private fun TextWatcherBTN() {
         val string = binding.status.text.toString().trim()
-        if (!string.isEmpty()==true){
+        if (!string.isEmpty() == true) {
             binding.btnPost.isEnabled = true
             binding.btnPost.setTextColor(Color.parseColor("#05AFFB"))
-        }else{
+        } else {
             binding.btnPost.isEnabled = false
             binding.btnPost.setTextColor(Color.parseColor("#BCBCBC"))
         }
@@ -88,7 +109,8 @@ class GalleryFragment : Fragment() {
         binding.btnPost.isEnabled = false
         binding.btnPost.setTextColor(Color.parseColor("#BCBCBC"))
     }
-    private fun  PickImage(){
+
+    private fun PickImage() {
         activity?.let {
             TedImagePicker.with(it)
                 .start { uri ->
@@ -104,4 +126,5 @@ class GalleryFragment : Fragment() {
         }
     }
 }
+
 

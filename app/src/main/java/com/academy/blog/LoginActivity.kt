@@ -4,15 +4,14 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.academy.blog.databinding.ActivityLoginBinding
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -24,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import java.util.*
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -66,20 +66,20 @@ class LoginActivity : AppCompatActivity() {
         // Call functions login
         handleLoginWithEmailPassword()
 
-        // Call funciton login facebook
+        // Call function login facebook
         signInFacebook()
     }
 
-    fun checkConnect() {
-        if (!isConnected()) buildDialog()?.show()
+    private fun checkConnect() {
+        if (!isConnected()) buildDialog().show()
     }
 
-    fun buildDialog(): AlertDialog.Builder? {
+    private fun buildDialog(): AlertDialog.Builder {
         // Alert build
         val builder = AlertDialog.Builder(this)
         builder.setMessage("No Internet Connection")
-        builder.setPositiveButton("Ok") { dialog, which ->
-            startActivity(Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+        builder.setPositiveButton("Ok") { _, _ ->
+            startActivity(Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS))
         }
         return builder
     }
@@ -102,7 +102,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun isConnected(): Boolean {
+    private fun isConnected(): Boolean {
 
         /*  Check the network connection of the device, if not connected, go to D, otherwise go to the
          *  login screen
@@ -127,33 +127,45 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleLoginWithEmailPassword() {
-        // Handler login in application using username and password
-        val edtEmail = findViewById<TextView>(R.id.edtUsername)
-        val edtPassword = findViewById<TextView>(R.id.edtPassword)
-        val btnLogin = findViewById<Button>(R.id.btnLogin)
-        btnLogin.setOnClickListener(View.OnClickListener {
 
-            if (edtEmail.text.isEmpty() || edtPassword.text.isEmpty()) {
-                Toast.makeText(
-                    this,
-                    "Email or password not null !",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else if (edtEmail.text == "ptky.18it4@sict.udn.vn" && edtEmail.text == "0909099900") {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+        // Handler login in application using username and password
+        binding.btnLogin.setOnClickListener {
+            val email = binding.edtEmail.text.toString().trim()
+            val password = binding.edtPassword.text.toString().trim()
+            if (isValidEmail(email) && isValidPassword(password)) {
+                mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            val user = mAuth.currentUser
+                            updateUI(user)
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(baseContext, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show()
+                            updateUI(null)
+                        }
+                    }
             } else {
                 Toast.makeText(
-                    this,
-                    "Email or password not correct !",
+                    this@LoginActivity,
+                    "Please check your email or password again!",
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        })
+        }
     }
 
-    // Gooogle
+    private fun isValidEmail(email: String): Boolean {
+        return !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    private fun isValidPassword(password: String): Boolean {
+        // TODO: 5/14/2021 : validate password
+        val PASSWORD_REGEX = """^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!\-_?&])(?=\S+$).{8,}""".toRegex()
+        return(PASSWORD_REGEX.matches(password))
+    }
+    // Google
     private fun signInGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
@@ -207,25 +219,23 @@ class LoginActivity : AppCompatActivity() {
 
         // Initialize Facebook Login button
         callbackManager = CallbackManager.Factory.create()
-        binding.btnFacebook.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                LoginManager.getInstance().logInWithReadPermissions(
-                    this@LoginActivity, Arrays.asList("email", "public_profile")
-                )
-                LoginManager.getInstance().registerCallback(callbackManager,
-                    object : FacebookCallback<LoginResult> {
-                        override fun onSuccess(loginResult: LoginResult) {
-                            handleFacebookAccessToken(loginResult.accessToken)
-                        }
+        binding.btnFacebook.setOnClickListener {
+            LoginManager.getInstance().logInWithReadPermissions(
+                this@LoginActivity, listOf("email", "public_profile")
+            )
+            LoginManager.getInstance().registerCallback(callbackManager,
+                object : FacebookCallback<LoginResult> {
+                    override fun onSuccess(loginResult: LoginResult) {
+                        handleFacebookAccessToken(loginResult.accessToken)
+                    }
 
-                        override fun onCancel() {
-                        }
+                    override fun onCancel() {
+                    }
 
-                        override fun onError(error: FacebookException) {
-                        }
-                    })
-            }
-        })
+                    override fun onError(error: FacebookException) {
+                    }
+                })
+        }
 
     }
 
