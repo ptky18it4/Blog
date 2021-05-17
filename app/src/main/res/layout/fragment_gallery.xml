@@ -36,16 +36,17 @@
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
-            <TextView
+            <Button
                 android:id="@+id/btn_post"
                 android:layout_width="wrap_content"
-                android:layout_height="22dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="15dp"
                 android:text="Post"
-                android:textColor="#1893FF"
-                android:textSize="20sp" />
+                android:textColor="@color/dark_black"
+                android:enabled="false"
+                android:background="@android:color/transparent"/>
 
         </RelativeLayout>
 

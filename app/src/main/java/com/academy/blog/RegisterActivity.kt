@@ -28,7 +28,6 @@ class RegisterActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-
         // Firebase Auth instance
         mAuth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()

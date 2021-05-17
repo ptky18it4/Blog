@@ -5,22 +5,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.academy.blog.R
 import com.academy.blog.adapter.PostAdapter
-import com.academy.blog.adapter.StatusAdapter
-import com.academy.blog.data.InstaStatus
-import com.academy.blog.data.Post
+import com.academy.blog.data.ReadPost
 import com.academy.blog.databinding.FragmentHomeBinding
+<<<<<<< HEAD
 import com.google.firebase.auth.FirebaseAuth
-import com.google.gson.Gson
+
+=======
+import com.google.firebase.database.*
+>>>>>>> master
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
+<<<<<<< HEAD
     private lateinit var mAuth: FirebaseAuth
+=======
+    private lateinit var ref: DatabaseReference
+
+>>>>>>> master
     override fun onCreateView(
         inflater: LayoutInflater,
         parent: ViewGroup?,
@@ -36,28 +42,26 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val activity = activity as Context
 
-        binding.instaStatusList.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         binding.postList.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-
-        val statusJSON: String =
-            activity.assets.open("status.json").bufferedReader().use { it.readText() }
-        val postJSON: String =
-            activity.assets.open("post.json").bufferedReader().use { it.readText() }
-
-        val status = Gson().fromJson(statusJSON, Array<InstaStatus>::class.java)
-        val post = Gson().fromJson(postJSON, Array<Post>::class.java)
-
-        val statusList = status.toList() as ArrayList
-        val postList = post.toList() as ArrayList
-
-
-        val statusAdapter = StatusAdapter(activity, statusList)
-        binding.instaStatusList.adapter = statusAdapter
-
-        val postAdapter = PostAdapter(activity, postList)
-        binding.postList .adapter = postAdapter
+        binding.postList.setHasFixedSize(true)
+        val postList = arrayListOf<ReadPost>()
+        ref = FirebaseDatabase.getInstance().getReference("/post")
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (postSnapshot in snapshot.children) {
+                        val data = postSnapshot.getValue(ReadPost::class.java)
+                        postList.add(data!!)
+                    }
+                    val adapter = PostAdapter(activity,postList)
+                    binding.postList.adapter = adapter
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(activity, error.message, Toast.LENGTH_SHORT).show()
+            }
+        })
 
 
     }
