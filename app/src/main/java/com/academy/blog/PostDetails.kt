@@ -17,6 +17,8 @@ class PostDetails : AppCompatActivity() {
     private lateinit var binding: ActivityPostDetailsBinding
     private lateinit var idPost: String
     private lateinit var ref: DatabaseReference
+    private var like = false
+    private var uid = "1234"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,13 +45,47 @@ class PostDetails : AppCompatActivity() {
         // xử lí button back
         binding.btnBack.setOnClickListener { finish() }
         binding.addComment.setOnClickListener { addComment() }
+        binding.likes.setOnClickListener { eventLikes()  }
+        binding.addComment.setOnClickListener { addComment() }
 
         reloadComment()
-
+        reloadLikes()
     }
 
+    private fun eventLikes() {
+        val setLike = FirebaseDatabase.getInstance().getReference("/like/$idPost")
+        if (like==false){
+            like = true
+            setLike.child(uid).setValue(true)
+        }else{
+            like = false
+            setLike.child(uid).removeValue()
+        }
+    }
+
+    private fun reloadLikes() {
+        val setLike = FirebaseDatabase.getInstance().getReference("/like")
+        setLike.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.child(idPost).hasChild(uid)) {
+                    like = true
+                    val likeNumber = snapshot.child(idPost).childrenCount
+                    binding.likeNumber.text = likeNumber.toString() + " like"
+                    binding.likes.setImageResource(R.drawable.ic_baseline_favorite_24)
+                } else {
+                    val likeNumber = snapshot.child(idPost).childrenCount
+                    binding.likeNumber.text = likeNumber.toString() + " like"
+                    binding.likes.setImageResource(R.drawable.ic_big_heart)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+
     private fun addComment() {
-        if (binding.comment.text.length >0){
+        if (binding.comment.text.length > 0) {
             val uid = UUID.randomUUID().toString()
             val database = FirebaseDatabase.getInstance().getReference("/comment/$idPost").push()
             val comment = binding.comment.text.toString()
@@ -59,10 +95,11 @@ class PostDetails : AppCompatActivity() {
             val dataComment = NewComment(comment, uid, uname, uavatar)
             database.setValue(dataComment)
             database.child("dateCreate").setValue(ServerValue.TIMESTAMP)
-            Toast.makeText(this@PostDetails, uname+" "+comment, Toast.LENGTH_SHORT).show()
-        }else{
+            Toast.makeText(this@PostDetails, uname + " " + comment, Toast.LENGTH_SHORT).show()
+        } else {
             binding.addComment.isEnabled = false
-            Toast.makeText(this@PostDetails, "Hãy nhập bình luận của bạn", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@PostDetails, "Hãy nhập bình luận của bạn", Toast.LENGTH_SHORT)
+                .show()
         }
 
 
