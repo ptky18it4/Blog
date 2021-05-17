@@ -92,7 +92,7 @@
                         android:layout_centerVertical="true"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/menu_margin"
-                        android:src="@drawable/profile"
+                        android:src="@drawable/default_avatar"
                     tools:ignore="MissingClass" />
 
             </RelativeLayout>

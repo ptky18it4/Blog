@@ -64,26 +64,7 @@
         app:layout_constraintVertical_bias="0.8"
         tools:context=".MainActivity">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/outlinedTextFieldUsername"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:hint="USER NAME"
-            android:textColorHint="@color/light_gray"
-            app:boxStrokeColor="@color/light_gray">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtUsername"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/light_gray"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/outlinedTextFieldEmailAddress"
@@ -93,12 +74,12 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"
-            android:hint="EMAIL ADDRESS"
+            android:hint="Email"
             android:textColorHint="@color/light_gray"
             app:boxStrokeColor="@color/light_gray">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtEmailAddress"
+                android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="textEmailAddress"
@@ -115,7 +96,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"
-            android:hint="PASSWORD"
+            android:hint="Password"
             android:pointerIcon="copy"
             android:textColorHint="@color/light_gray"
             app:boxStrokeColor="@color/light_gray"
