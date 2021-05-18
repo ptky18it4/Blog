@@ -48,7 +48,7 @@ class CommentAdapter(val activity: Context, val commentList: ArrayList<ReadComme
         val spannableString = SpannableString(textComment)
         val boldSpan = StyleSpan(Typeface.BOLD)
         if (textComment != null) {
-             spannableString.setSpan(boldSpan, 0, uname!!.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+             spannableString.setSpan(boldSpan, 0, uname!!.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
         holder.comment.text = spannableString
 

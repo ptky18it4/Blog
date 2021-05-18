@@ -77,23 +77,12 @@
               android:layout_marginStart="15dp"
               android:src="@drawable/ic_heart" />
 
-          <ImageView
-              android:id="@+id/reply"
-              android:layout_width="@dimen/footer_menu_size"
-              android:layout_height="@dimen/footer_menu_size"
-              android:layout_centerVertical="true"
-              android:layout_marginStart="15dp"
-              android:layout_toEndOf="@+id/heart"
-              android:src="@drawable/ic_reply" />
-
-          <ImageView
-              android:id="@+id/send"
-              android:layout_width="@dimen/footer_menu_size"
-              android:layout_height="@dimen/footer_menu_size"
-              android:layout_centerVertical="true"
-              android:layout_marginStart="15dp"
-              android:layout_toEndOf="@+id/reply"
-              android:src="@drawable/ic_send" />
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/likes_txt"
+              android:textSize="15sp"
+              android:layout_marginLeft="5dp"/>
 
       </LinearLayout>
 
